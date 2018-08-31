@@ -1,7 +1,7 @@
 @students = [] # an empty array accessible to all methods
 
 def input_students
-  puts "Please enter the names, hobbies and genders of the students".center(50)
+  puts "Please enter the name, cohort and favourite hobby of each students".center(50)
   puts "To finish, press enter 3 times".center(50)
   # get the first name
   name = gets.chomp
@@ -36,6 +36,7 @@ def print_menu
   puts "2. Show the students".center(110)
   puts "3. Show the students' favourite hobbies".center(110)
   puts "4. Save the list to students.csv".center(110)
+  puts "5. Load the list to students.csv".center(110)
   puts "9. Exit".center(110) # 9 because we'll be adding more items
 end
 
@@ -61,6 +62,8 @@ def process(selection)
     students_hobbies
   when "4"
     save_students
+  when "5"
+    load_students
   when "9"
     exit # this will cause the program to terminate
   else
@@ -91,6 +94,15 @@ def save_students
     student_data = [student[:name], student[:cohort], student[:hobby]]
     csv_line = student_data.join(",")
     file.puts csv_line
+  end
+  file.close
+end
+
+def load_students
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+  name, cohort, hobby = line.chomp.split(',')
+    @students << {name: name, cohort: cohort.to_sym, hobby: hobby}
   end
   file.close
 end
